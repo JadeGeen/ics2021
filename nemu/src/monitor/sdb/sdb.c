@@ -46,6 +46,7 @@ static int cmd_si(char *args){
 	else{
 		int N;
 		N = (int)*args;
+		printf("%d\n",N);
 		cpu_exec(N);
 	}
 	return 0;
