@@ -43,6 +43,11 @@ static int cmd_si(char *args){
 	if (args==NULL){
 		cpu_exec(1);
 	}
+	else{
+		int N;
+		N = (int)*args;
+		cpu_exec(N);
+	}
 	return 0;
 }
 
