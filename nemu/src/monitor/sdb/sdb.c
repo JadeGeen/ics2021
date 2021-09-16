@@ -44,10 +44,10 @@ static int cmd_si(char *args){
 		cpu_exec(1);
 	}
 	else{
-		int N;
-		N = (int)*args-48;
-		printf("%d\n",N);
-		cpu_exec(N);
+		int *N;
+		N = (int*)args;
+		printf("%d\n",*N);
+		cpu_exec(*N);
 	}
 	return 0;
 }
