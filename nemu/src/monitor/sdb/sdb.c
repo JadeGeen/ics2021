@@ -39,15 +39,18 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+#include <stdio.h>
+#include <stdlib.h>
+
 static int cmd_si(char *args){
 	if (args==NULL){
 		cpu_exec(1);
 	}
 	else{
-		int *N;
-		N = (int*)args;
-		printf("%d\n",*N);
-		cpu_exec(*N);
+		int N;
+		N = atoi(args);
+		printf("%d\n",N);
+		cpu_exec(N);
 	}
 	return 0;
 }
