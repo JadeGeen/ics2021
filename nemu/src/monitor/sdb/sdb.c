@@ -54,6 +54,14 @@ static int cmd_si(char *args){
 	return 0;
 }
 
+static int cmd_info(char *args){
+	if (args[0]=='r'){
+		isa_reg_display();
+	}
+	return 0;
+}
+
+
 static struct {
   const char *name;
   const char *description;
@@ -63,6 +71,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si","Let the program execute N instuctions in a single step and then pause execution. When N is not given, the default is 1.",cmd_si},
+  {"info","info r:print register status,info w:print watching point status",cmd_info},
 
   /* TODO: Add more commands */
 
