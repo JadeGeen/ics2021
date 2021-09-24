@@ -61,6 +61,17 @@ static int cmd_info(char *args){
 	return 0;
 }
 
+static int cmd_x(char *args){
+	char *arg1=strtok(NULL," ");
+	int N;
+	N= atoi(arg1);
+	char *arg2=strtok(NULL," ");
+	printf("%d%s\n",N,arg2);
+
+	return 0;
+
+}
+
 
 static struct {
   const char *name;
@@ -72,6 +83,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si","Let the program execute N instuctions in a single step and then pause execution. When N is not given, the default is 1.",cmd_si},
   {"info","info r:print register status,info w:print watching point status",cmd_info},
+  {"x","x N EXPR, Evaluate the expression, using the result as the staring memory address",cmd_x},
 
   /* TODO: Add more commands */
 
