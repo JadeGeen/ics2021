@@ -66,9 +66,15 @@ static int cmd_x(char *args){
 	int N;
 	N = atoi(arg1);
 	char *arg2 = strtok(NULL," ");
+	extern  word_t paddr_read(paddr_t addr,int len);
 	uint32_t addr;
 	addr = (uint32_t)strtol(arg2,NULL,16);
-	printf("%d%d",N,addr);	
+	for (int i=0;i<N;i++){
+		uint32_t data;
+		data=paddr_read(addr,4);
+		printf("0x%08x\n",data);
+
+	}
 	return 0;
 
 }
