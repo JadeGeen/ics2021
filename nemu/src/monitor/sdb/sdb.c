@@ -62,12 +62,13 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
-	char *arg1=strtok(NULL," ");
+	char *arg1 = strtok(NULL," ");
 	int N;
-	N= atoi(arg1);
-	char *arg2=strtok(NULL," ");
-	printf("%d%s\n",N,arg2);
-
+	N = atoi(arg1);
+	char *arg2 = strtok(NULL," ");
+	int addr;
+	addr = strtol(arg2,NULL,16);
+	printf("%d%d",N,addr);	
 	return 0;
 
 }
