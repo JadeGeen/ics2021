@@ -66,8 +66,8 @@ static int cmd_x(char *args){
 	int N;
 	N = atoi(arg1);
 	char *arg2 = strtok(NULL," ");
-	paddr_t addr;
-	addr = (paddr_t)strtol(arg2,NULL,16);
+	uint32_t addr;
+	addr = (uint32_t)strtol(arg2,NULL,16);
 	printf("%d%d",N,addr);	
 	return 0;
 
