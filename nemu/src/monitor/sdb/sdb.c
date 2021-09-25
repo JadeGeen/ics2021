@@ -73,7 +73,7 @@ static int cmd_x(char *args){
 		uint32_t data;
 		data=paddr_read(addr,4);
 		printf("0x%08x\n",data);
-
+		addr=addr+1;
 	}
 	return 0;
 
