@@ -79,6 +79,18 @@ static int cmd_x(char *args){
 
 }
 
+static int cmd_p(char *args){
+	return 0;
+
+}
+
+static int cmd_w(char *args){
+	return 0;
+}
+
+static int cmd_d(char *args){
+	return 0;
+}
 
 static struct {
   const char *name;
@@ -88,9 +100,12 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si","Let the program execute N instuctions in a single step and then pause execution. When N is not given, the default is 1.",cmd_si},
-  {"info","info r:print register status,info w:print watching point status",cmd_info},
-  {"x","x N EXPR, Evaluate the expression, using the result as the staring memory address",cmd_x},
+  { "si", "Let the program execute N instuctions in a single step and then pause execution. When N is not given, the default is 1.", cmd_si},
+  {"info", "info r: print register status,info w:print watching point status", cmd_info },
+  {"x", "x N EXPR: evaluate the expression, using the result as the staring memory address", cmd_x },
+  {"p", "p EXPR: evaluate the expression", cmd_p },
+  {"w", "w EXPR: suspend the program execution when the value of the expression changes", cmd_w },
+  {"d","d N: delete the monitor point labeled N", cmd_d},
 
   /* TODO: Add more commands */
 
