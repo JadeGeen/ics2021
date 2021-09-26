@@ -23,10 +23,12 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},		    // plus
-  {"\\-", '-'},
-  {"\\*", '*'},
-  {"\\/", '/' },
-  {"[0-9]", TK_NUMBER},
+  {"-", '-'},			// minus
+  {"\\*", '*'},			// multiply
+  {"/", '/' },			// divide
+  {"[0-9]", TK_NUMBER}, // number
+  {"\\(", '('},
+  {"\\)", ')'},
   {"==", TK_EQ},        // equal
 };
 
@@ -84,6 +86,42 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
+		  case TK_NOTYPE:
+			  break;
+		  case '+':
+			  tokens[nr_token].type='+';
+			  nr_token++;
+			  break;
+		  case '-':
+			  tokens[nr_token].type='-';
+			  nr_token++;
+			  break;
+		  case '*':
+			  tokens[nr_token].type='*';
+			  nr_token++;
+			  break;
+		  case '/':
+			  tokens[nr_token].type='/';
+			  nr_token++;
+			  break;
+		  case TK_NUMBER:
+			  tokens[nr_token].type=TK_NUMBER;
+			  nr_token++;
+			  break;
+		  case '(':
+			  tokens[nr_token].type='(';
+			  nr_token++;
+			  break;
+		  case ')':
+			  tokens[nr_token].type=')';
+			  nr_token++;
+			  break;
+		  case TK_EQ:
+			  tokens[nr_token].type=TK_EQ;
+			  nr_token++;
+			  break;
+
+
           default: TODO();
         }
 
