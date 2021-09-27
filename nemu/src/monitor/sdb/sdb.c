@@ -80,7 +80,15 @@ static int cmd_x(char *args){
 }
 
 static int cmd_p(char *args){
-	return 0;
+	bool valid = true;
+	bool *success = &valid;
+	uint32_t res = expr(args,success);
+	if (valid == true){
+		return res;
+	}
+	else{
+		return 0;
+	}
 
 }
 
