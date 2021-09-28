@@ -16,78 +16,77 @@ static char *code_format =
 "  return 0; "
 "}";
 
-static int index=0;
+static int buf_index=0;
 
 #include<time.h>
 
 static uint32_t choose(uint32_t n){
-	randomize();
 	uint32_t x = rand()%n;
 	return x;
 }
 
 
-static void gen(int x){
-	if(index>=65536){
-		return;
-	}
+static void gen(char x){
+	if(buf_index<65535){
 	switch(x){
 		case '(':
-			buf[index]="\\(";
-			index++;
-			break;
 		case ')':
-			buf[index]="\\)";
-			index++;
+			buf[buf_index]=x;
+			buf_index++;
 			break;
 		default:break;
 	}
+	}
+	return;
 }
 
 static void gen_num(){
-	uint32_t newnum=choose(65536);
-	char newnumber[4];
-	ultoa(newnum,newnumer,10);
+	uint32_t newnum=choose(65535)+1;
+	char newnumber[5];
+	sprintf(newnumber,"%u",newnum);
 	int length = strlen(newnumber);
 	for (int i = 0;i<length;i++){
-		if(index>=65536){
+		if(buf_index>=65535){
 			break;
 		}
-		buf[index]=newnumber[i];
-		index++;
+		buf[buf_index]=newnumber[i];
+		buf_index++;
+	}
+	return;
 }
 
 static void gen_rand_op(){
-	if(index>=65536){
-		return;
-	}
+	if(buf_index<65535){
 	switch (choose(4)){
 		case 0:
-			buf[index]="\\+";
-			index++;
+			buf[buf_index]='+';
+			buf_index++;
 			break;
 		case 1:
-			buf[index]="-";
-			index++;
+			buf[buf_index]='-';
+			buf_index++;
 			break;
 		case 2:
-			buf[index]="\\*";
-			index++;
+			buf[buf_index]='*';
+			buf_index++;
 			break;
 		default:
-			buf[index]="/";
-			index++;
+			buf[buf_index]='/';
+			buf_index++;
 			break;
 	}
+	}
+	return;
 }
 
 static void gen_rand_expr() {
-	buf[0] = '\0';
 	switch (choose(3)) {
 		case 0: gen_num(); break;
 		case 1: gen('('); gen_rand_expr(); gen(')'); break;
 		default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;								   
 	}
+	buf[buf_index] = '\0';
+	return;
 }
 
 int main(int argc, char *argv[]) {

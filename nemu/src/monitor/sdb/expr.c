@@ -6,7 +6,7 @@
 #include <regex.h>
 
 enum {
-	TK_NOTYPE = 256, TK_EQ, TK_NUMBER,
+	TK_NOTYPE = 256, TK_EQ, TK_NUMBER, TK_NEG,
 
 	/* TODO: Add more token types */
 
@@ -30,7 +30,7 @@ static struct rule {
 	{"[0-9]+", TK_NUMBER,0}, // number
 	{"\\(", '(',0},
 	{"\\)", ')',0},
-	{"==", TK_EQ,0},        // equal
+	{"==", TK_EQ,0},	  // equal
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -144,6 +144,16 @@ word_t expr(char *e, bool *success) {
 
 	/* TODO: Insert codes to evaluate the expression. */
 
+	int i;
+	for(i=0;i<nr_token;i++){
+		if(tokens[i].type=='-'){
+			if(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'){
+				tokens[i].type=TK_NEG;
+				tokens[i].priority=3;
+			}
+		}
+	}
+
 	uint32_t res=eval(0,nr_token);
 	return res;
 
@@ -179,7 +189,7 @@ int find_dominant_op(int p,int q){
 	int start=p+1;
 	int end=q;
 	int dominant_op=p;
-	int max_priority=tokens[p].priority;
+	int min_priority=tokens[p].priority;
 	while(start<end){
 		if (tokens[start].type=='('){
 			int i;
@@ -191,9 +201,9 @@ int find_dominant_op(int p,int q){
 			start=i+1;
 			continue;
 		}
-		else if (tokens[start].priority>=max_priority){
+		else if (tokens[start].priority<=min_priority){
 			dominant_op=start;
-			max_priority=tokens[start].priority;
+			min_priority=tokens[start].priority;
 			start++;
 		}
 	}
@@ -234,6 +244,7 @@ uint32_t eval(int p,int q) {
 				case '-': return val1 - val2;
 				case '*': return val1 * val2;
 				case '/': return val1 / val2;
+				case TK_NEG: return -val2;
 				default: assert(0);
 			}
 		}
