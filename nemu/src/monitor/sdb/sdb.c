@@ -84,6 +84,7 @@ static int cmd_p(char *args){
 	bool *success = &valid;
 	uint32_t res = expr(args,success);
 	if (valid == true){
+		printf("%d",res);
 		return res;
 	}
 	else{
