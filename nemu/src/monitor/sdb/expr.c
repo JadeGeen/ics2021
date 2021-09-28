@@ -143,23 +143,26 @@ word_t expr(char *e, bool *success) {
 	}
 
 	/* TODO: Insert codes to evaluate the expression. */
+	else{
+		*success=true;
 
-	int i;
-	for(i=0;i<nr_token;i++){
-		if(tokens[i].type=='-'){
-			if(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'){
-				tokens[i].type=TK_NEG;
-				tokens[i].priority=3;
+		int i;
+		for(i=0;i<nr_token;i++){
+			if(tokens[i].type=='-'){
+				if(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'){
+					tokens[i].type=TK_NEG;
+					tokens[i].priority=3;
+				}
 			}
 		}
+
+		uint32_t res=eval(0,nr_token-1);
+		return res;
+
+		//TODO();
+
+		//return 0;
 	}
-
-	uint32_t res=eval(0,nr_token-1);
-	printf("%d",res);
-
-	TODO();
-
-	return 0;
 }
 
 

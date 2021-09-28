@@ -81,8 +81,9 @@ static int cmd_x(char *args){
 
 static int cmd_p(char *args){
 	bool valid = NULL;
-	expr(args,&valid);
-	return 0;
+	uint32_t res=expr(args,&valid);
+		printf("%u",res);
+		return (int)res;
 
 }
 
