@@ -23,6 +23,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 	}
 	if(i<32&&i>=0){
 		*success=true;
+		printf ("0x%08x/n",cpu.gpr[i]._32);
 		return cpu.gpr[i]._32;
 	}
 	else{
