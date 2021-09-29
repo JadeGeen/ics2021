@@ -27,7 +27,7 @@ static struct rule {
 	{"\\)", ')',10},
 	{"0x[0-9,a-f]+",TK_HEX,10},
 	{"[0-9]+", TK_NUMBER,10}, // number
-	{"$[[a-z]|$][0-11,ap]",TK_REG,10},
+	{"\\$[[a-z]|$][0-11,ap]",TK_REG,10},
 	{"\\+", '+',4},		    // plus
 	{"-", '-',4},			// minus
 	{"\\*", '*',5},			// multiply
