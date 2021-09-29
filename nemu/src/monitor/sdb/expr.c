@@ -190,7 +190,7 @@ bool check_parentheses(int p,int q){
 }
 
 int find_dominant_op(int p,int q){
-	int start=p+1;
+	int start=p;
 	int end=q;
 	int dominant_op=p;
 	int min_priority=tokens[p].priority;
@@ -208,8 +208,8 @@ int find_dominant_op(int p,int q){
 		else if (tokens[start].priority<min_priority){
 			dominant_op=start;
 			min_priority=tokens[start].priority;
-			start++;
 		}
+		start++;
 	}
 	return dominant_op;
 }
