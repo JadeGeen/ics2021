@@ -103,10 +103,8 @@ static bool make_token(char *e) {
 					case TK_NUMBER:
 						tokens[nr_token].type=TK_NUMBER;
 						tokens[nr_token].priority=rules[i].priority;
-						printf("%s\n",substr_start);
 						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						tokens[nr_token].str[substr_len]='\0';
-						printf("%s\n",tokens[nr_token].str);
 						nr_token++;
 						break;
 					case TK_EQ:
