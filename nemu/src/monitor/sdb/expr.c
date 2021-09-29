@@ -103,9 +103,7 @@ static bool make_token(char *e) {
 					case TK_NUMBER:
 						tokens[nr_token].type=TK_NUMBER;
 						tokens[nr_token].priority=rules[i].priority;
-						for(int j=0;j<substr_len;j++){
-							tokens[nr_token].str[j]=substr_start[j];
-						}
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						printf("%s\n",tokens[nr_token].str);
 						nr_token++;
 						break;
@@ -229,7 +227,6 @@ uint32_t eval(int p,int q) {
 		 */
 		uint32_t number;
 		number=(uint32_t)atoi(tokens[p].str);
-		printf("%u\n",number);
 		return number;
 	}
 	else if (check_parentheses(p, q) == true ) {
