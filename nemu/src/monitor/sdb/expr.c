@@ -106,6 +106,7 @@ static bool make_token(char *e) {
 						for(int j=0;j<substr_len;j++){
 							tokens[nr_token].str[j]=substr_start[j];
 						}
+						printf("%s\n",tokens[nr_token].str);
 						nr_token++;
 						break;
 					case TK_EQ:
