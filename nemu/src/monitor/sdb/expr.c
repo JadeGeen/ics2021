@@ -22,15 +22,15 @@ static struct rule {
 	 * Pay attention to the precedence level of different rules.
 	 */
 
-	{" +", TK_NOTYPE,0},    // spaces
+	{" +", TK_NOTYPE,10},    // spaces
 	{"\\+", '+',1},		    // plus
 	{"-", '-',1},			// minus
 	{"\\*", '*',2},			// multiply
 	{"/", '/',2 },			// divide
-	{"[0-9]+", TK_NUMBER,0}, // number
-	{"\\(", '(',0},
-	{"\\)", ')',0},
-	{"==", TK_EQ,0},	  // equal
+	{"[0-9]+", TK_NUMBER,10}, // number
+	{"\\(", '(',10},
+	{"\\)", ')',10},
+	{"==", TK_EQ,10},	  // equal
 };
 
 #define NR_REGEX ARRLEN(rules)
