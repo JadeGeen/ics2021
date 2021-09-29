@@ -194,7 +194,7 @@ int find_dominant_op(int p,int q){
 	int end=q;
 	int dominant_op=p;
 	int min_priority=tokens[p].priority;
-	while(start<end){
+	while(start<=end){
 		if (tokens[start].type=='('){
 			int i;
 			for(i=start+1;i<=end;i++){
@@ -205,7 +205,7 @@ int find_dominant_op(int p,int q){
 			start=i+1;
 			continue;
 		}
-		else if (tokens[start].priority<=min_priority){
+		else if (tokens[start].priority<min_priority){
 			dominant_op=start;
 			min_priority=tokens[start].priority;
 			start++;
