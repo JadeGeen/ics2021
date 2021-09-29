@@ -32,7 +32,6 @@ static struct rule {
 	{"-", '-',4},			// minus
 	{"\\*", '*',5},			// multiply
 	{"/", '/',5 },			// divide
-	{"!",'!',6},
 	{">",'>',3},
 	{">=", TK_GEQ,3},
 	{"<",'<',3},
@@ -41,6 +40,7 @@ static struct rule {
 	{"!=", TK_NEQ,2},
 	{"&&", TK_AND,1},
 	{"\\|\\|", TK_OR,0},
+	{"!",'!',6},
 };
 
 #define NR_REGEX ARRLEN(rules)
