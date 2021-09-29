@@ -6,7 +6,7 @@
 #include <regex.h>
 
 enum {
-	TK_NOTYPE = 256, TK_EQ, TK_NUMBER, TK_NEG,
+	TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_NUMBER, TK_HEX, TK_REG, TK_NEG, TK_AND, TK_OR,TK_DEREF, TK_GEQ, TK_LEQ, 
 
 	/* TODO: Add more token types */
 
@@ -23,14 +23,24 @@ static struct rule {
 	 */
 
 	{" +", TK_NOTYPE,10},    // spaces
-	{"\\+", '+',1},		    // plus
-	{"-", '-',1},			// minus
-	{"\\*", '*',2},			// multiply
-	{"/", '/',2 },			// divide
-	{"[0-9]+", TK_NUMBER,10}, // number
 	{"\\(", '(',10},
 	{"\\)", ')',10},
-	{"==", TK_EQ,10},	  // equal
+	{"0x[0-9,a-f]+",TK_HEX,10},
+	{"[0-9]+", TK_NUMBER,10}, // number
+	{"$[[a-z]|$][0-11,ap]",TK_REG,10},
+	{"\\+", '+',4},		    // plus
+	{"-", '-',4},			// minus
+	{"\\*", '*',5},			// multiply
+	{"/", '/',5 },			// divide
+	{"!",'!',6},
+	{">",'>',3},
+	{">=", TK_GEQ,3},
+	{"<",'<',3},
+	{"<=",TK_LEQ,3},
+	{"==", TK_EQ,2},	  // equal
+	{"!=", TK_NEQ,2},
+	{"&&", TK_AND,1},
+	{"\\|\\|", TK_OR,0},
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -95,20 +105,34 @@ static bool make_token(char *e) {
 					case '*':
 					case '/':
 					case '(':
-					case ')':
+					case ')': 
 						tokens[nr_token].type=rules[i].token_type;
 						tokens[nr_token].priority=rules[i].priority;
 						nr_token++;
 						break;
 					case TK_NUMBER:
-						tokens[nr_token].type=TK_NUMBER;
+					case TK_HEX:
+						tokens[nr_token].type=rules[i].token_type;
 						tokens[nr_token].priority=rules[i].priority;
 						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						tokens[nr_token].str[substr_len]='\0';
 						nr_token++;
 						break;
+					case TK_REG:
+						tokens[nr_token].type=rules[i].token_type;
+						tokens[nr_token].priority=rules[i].priority;
+						strncpy(tokens[nr_token].str,substr_start+1,substr_len-1);
+						tokens[nr_token].str[substr_len-1]='\0';
+
 					case TK_EQ:
-						tokens[nr_token].type=TK_EQ;
+					case TK_NEQ:
+					case '>':
+					case TK_GEQ:
+					case '<':
+					case TK_LEQ:
+					case TK_AND:
+					case TK_OR:
+						tokens[nr_token].type=rules[i].token_type;
 						tokens[nr_token].priority=rules[i].priority;
 						nr_token++;
 						break;
@@ -147,11 +171,13 @@ word_t expr(char *e, bool *success) {
 
 		int i;
 		for(i=0;i<nr_token;i++){
-			if(tokens[i].type=='-'){
-				if(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/'){
-					tokens[i].type=TK_NEG;
-					tokens[i].priority=3;
-				}
+			if(tokens[i].type=='-' &&(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/')){
+				tokens[i].type=TK_NEG;
+				tokens[i].priority=6;
+			}
+			if(tokens[i].type=='*' &&(i == 0 || tokens[i - 1].type == '+' || tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/')){
+				tokens[i].type = TK_DEREF;
+				tokens[i].priority=6;
 			}
 		}
 
@@ -215,6 +241,8 @@ int find_dominant_op(int p,int q){
 #include<stdio.h>
 #include<stdlib.h>
 
+extern word_t paddr_read(paddr_t addr,int len);
+
 uint32_t eval(int p,int q) {
 	if (p > q) {
 		/* Bad expression */
@@ -225,9 +253,31 @@ uint32_t eval(int p,int q) {
 		 * For now this token should be a number.
 		 * Return the value of the number.
 		 */
-		uint32_t number;
-		number=(uint32_t)atoi(tokens[p].str);
-		return number;
+		switch(tokens[p].type){
+			case TK_NUMBER:{
+							   uint32_t number;
+							   number=(uint32_t)atoi(tokens[p].str);
+							   return number;
+						   }
+			case TK_HEX:{
+							uint32_t hex_number;
+							hex_number=(uint32_t)strtol(tokens[p].str,NULL,16);
+							return hex_number;
+						}
+			case TK_REG:{
+							uint32_t reg_content;
+							bool check_success=true;
+							reg_content=isa_reg_str2val(tokens[p].str,&check_success);
+							if(check_success==true){
+								return reg_content;
+							}
+							else{
+								return 0;
+							}
+						}
+			default:TODO();
+
+		}
 	}
 	else if (check_parentheses(p, q) == true ) {
 		/* The expression is surrounded by a matched pair of parentheses.
@@ -247,6 +297,16 @@ uint32_t eval(int p,int q) {
 				case '*': return val1 * val2;
 				case '/': return val1 / val2;
 				case TK_NEG: return -val2;
+				case TK_DEREF:return paddr_read(val2,4);
+				case TK_AND:return val1 && val2;
+				case TK_OR:return val1 || val2;
+				case TK_EQ:return val1 == val2;
+				case TK_NEQ:return val1 != val2;
+				case TK_LEQ:return val1 <= val2;
+				case TK_GEQ:return val1 >= val2;
+				case '<':return val1 < val2;
+				case '>':return val1 > val2;
+				case '!':return !val2;
 				default: assert(0);
 			}
 		}
