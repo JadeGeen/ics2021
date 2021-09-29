@@ -228,6 +228,7 @@ uint32_t eval(int p,int q) {
 		 */
 		uint32_t number;
 		number=(uint32_t)atoi(tokens[p].str);
+		printf("%u\n",number);
 		return number;
 	}
 	else if (check_parentheses(p, q) == true ) {
