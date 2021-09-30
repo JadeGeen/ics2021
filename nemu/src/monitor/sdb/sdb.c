@@ -83,7 +83,7 @@ static int cmd_p(char *args){
 	bool valid = NULL;
 	uint32_t res=expr(args,&valid);
 	printf("%u\n",res);
-	return (uint32_t)res;
+	return 0;
 
 }
 
