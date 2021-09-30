@@ -3,6 +3,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include "watchpoint.h"
 
 static int is_batch_mode = false;
 
@@ -58,6 +59,10 @@ static int cmd_info(char *args){
 	if (args[0]=='r'){
 		isa_reg_display();
 	}
+	else if(args[0]=='w'){
+		extern void print_wp();
+		print_wp();
+	}
 	return 0;
 }
 
@@ -68,12 +73,15 @@ static int cmd_x(char *args){
 	char *arg2 = strtok(NULL," ");
 	extern  word_t paddr_read(paddr_t addr,int len);
 	uint32_t addr;
-	addr = (uint32_t)strtol(arg2,NULL,16);
+	bool valid=NULL;
+	addr = expr(arg2,&valid);
+	if(valid==true){
 	for (int i=0;i<N;i++){
 		uint32_t data;
 		data=paddr_read(addr,4);
 		printf("0x%08x"":""0x%08x\n",addr,data);
 		addr=addr+4;
+	}
 	}
 	return 0;
 
@@ -88,10 +96,23 @@ static int cmd_p(char *args){
 }
 
 static int cmd_w(char *args){
+	extern WP* new_wp(char *expr,uint32_t value);
+	bool valid=NULL;
+	uint32_t value=expr(args,&valid);
+	if (valid==true){
+		WP* new=new_wp(args,value);
+		printf("The index of watchpoint is %d\n",new->NO);
+	}
+	else{
+		printf("Expression invalid\n");
+	}
 	return 0;
 }
 
 static int cmd_d(char *args){
+	int N=atoi(args);
+	extern void free_wp(int N);
+	free_wp(N);
 	return 0;
 }
 
