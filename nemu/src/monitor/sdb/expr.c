@@ -316,7 +316,12 @@ uint32_t eval(int p,int q) {
 					  }
 			case '/': {
 						  uint32_t val1 = eval(p, op - 1);
+						  if(val2!=0){
 						  return val1 / val2;
+						  }
+						  else{
+							  assert(0);
+						  }
 					  }
 			case TK_NEG: {
 							 int i=op;
