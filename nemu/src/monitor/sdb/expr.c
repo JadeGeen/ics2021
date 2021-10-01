@@ -236,7 +236,7 @@ int find_dominant_op(int p,int q){
 			start=i+1;
 			continue;
 		}
-		else if (tokens[start].priority<min_priority){
+		else if (tokens[start].priority<=min_priority){
 			dominant_op=start;
 			min_priority=tokens[start].priority;
 		}
