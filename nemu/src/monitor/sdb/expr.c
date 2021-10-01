@@ -25,7 +25,7 @@ static struct rule {
 	{" +", TK_NOTYPE,10},    // spaces
 	{"\\(", '(',10},
 	{"\\)", ')',10},
-	{"\\$[$|[a-z]][[a-z]|[0-9]+]",TK_REG,10},
+	{"\\$[$,a-z,0-9]+",TK_REG,10},
 	{"0x[0-9,a-f,A-F]+",TK_HEX,10},
 	{"[0-9]+", TK_NUMBER,10}, // number
 	{"\\+", '+',4},		    // plus
