@@ -173,11 +173,11 @@ word_t expr(char *e, bool *success) {
 
 		int i;
 		for(i=0;i<nr_token;i++){
-			if(tokens[i].type=='-' &&(i == 0 || (tokens[i - 1].type != TK_NUMBER && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != TK_REG && tokens[i-1].type!='(' &&tokens[i-1].type!=')'))){
+			if(tokens[i].type=='-' &&(i == 0 || (tokens[i - 1].type != TK_NUMBER && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != TK_REG  &&tokens[i-1].type!=')'))){
 				tokens[i].type=TK_NEG;
 				tokens[i].priority=6;
 			}
-			if(tokens[i].type=='*' &&(i == 0 || (tokens[i - 1].type != TK_NUMBER && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != TK_REG&&tokens[i-1].type!='('&&tokens[i-1].type!=')' ))){
+			if(tokens[i].type=='*' &&(i == 0 || (tokens[i - 1].type != TK_NUMBER && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != TK_REG&&tokens[i-1].type!=')' ))){
 				tokens[i].type = TK_DEREF;
 				tokens[i].priority=6;
 			}
