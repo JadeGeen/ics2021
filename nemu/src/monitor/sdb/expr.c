@@ -254,7 +254,7 @@ extern word_t paddr_read(paddr_t addr,int len);
 uint32_t eval(int p,int q) {
 	if (p > q) {
 		/* Bad expression */
-		assert(0);
+		return 0;
 	}
 	else if (p == q) {
 		/* Single token.
@@ -299,84 +299,25 @@ uint32_t eval(int p,int q) {
 	}
 	else{
 		int op = find_dominant_op(p,q); 
+		uint32_t val1 = eval(p, op - 1);
 		uint32_t val2 = eval(op + 1, q);
 		//printf("%d\n",op);
 		switch (tokens[op].type) {
-			case '+': {
-						  uint32_t val1 = eval(p, op - 1);
-						  return val1 + val2;
-					  }
-			case '-': {
-						  uint32_t val1 = eval(p, op - 1);
-						  return val1 - val2;
-					  }
-			case '*': {
-						  uint32_t val1 = eval(p, op - 1);
-						  return val1 * val2;
-					  }
-			case '/': {
-						  uint32_t val1 = eval(p, op - 1);
-						  if(val2!=0){
-						  return val1 / val2;
-						  }
-						  else{
-							  assert(0);
-						  }
-					  }
-			case TK_NEG: {
-							 int i=op;
-							 uint32_t result=val2;
-							 while(tokens[i].type==TK_NEG&&i>=0){
-								 result=-result;
-								 i--;
-							 }
-
-							 return result;
-						 }
-			case TK_DEREF:{
-							  int i=op;
-							  uint32_t addr=val2;
-							  while(tokens[i].type==TK_DEREF&&i>=0){
-								  addr= paddr_read(addr,4);
-								  i--;
-							  }
-							  return addr;
-						  }
-			case TK_AND:{
-							uint32_t val1 = eval(p, op - 1);
-							return val1 && val2;
-						}
-			case TK_OR:{
-						   uint32_t val1 = eval(p, op - 1);
-						   return val1 || val2;
-					   }
-			case TK_EQ:{
-						   uint32_t val1 = eval(p, op - 1);
-						   return val1 == val2;
-					   }
-			case TK_NEQ:{
-							uint32_t val1 = eval(p, op - 1);
-							return val1 != val2;
-						}
-			case TK_LEQ:{
-							uint32_t val1 = eval(p, op - 1);
-							return val1 <= val2;
-						}
-			case TK_GEQ:{
-							uint32_t val1 = eval(p, op - 1);
-							return val1 >= val2;
-						}
-			case '<':{
-						 uint32_t val1 = eval(p, op - 1);
-						 return val1 < val2;
-					 }
-			case '>':{
-						 uint32_t val1 = eval(p, op - 1);
-						 return val1 > val2;
-					 }
-			case '!':{
-						 return !val2;
-					 }
+			case '+': return val1 + val2;
+			case '-': return val1 - val2;
+			case '*': return val1 * val2;
+			case '/': return val1 / val2;
+			case TK_NEG: return -val2;
+			case TK_DEREF:{uint32_t addr= paddr_read(val2,4);return addr;}
+			case TK_AND:return val1 && val2;
+			case TK_OR:return val1 || val2;
+			case TK_EQ:return val1 == val2;
+			case TK_NEQ:return val1 != val2;
+			case TK_LEQ:return val1 <= val2;
+			case TK_GEQ:return val1 >= val2;
+			case '<':return val1 < val2;
+			case '>':return val1 > val2;
+			case '!':return !val2;
 			default: assert(0);
 		}
 	}
