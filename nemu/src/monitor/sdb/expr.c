@@ -123,6 +123,7 @@ static bool make_token(char *e) {
 						tokens[nr_token].priority=rules[i].priority;
 						strncpy(tokens[nr_token].str,substr_start+1,substr_len-1);
 						tokens[nr_token].str[substr_len-1]='\0';
+						break;
 
 					case TK_EQ:
 					case TK_NEQ:
@@ -306,7 +307,16 @@ uint32_t eval(int p,int q) {
 			case '-': return val1 - val2;
 			case '*': return val1 * val2;
 			case '/': return val1 / val2;
-			case TK_NEG: return -val2;
+			case TK_NEG: {
+							 int i=op;
+							 uint32_t result=val2;
+							 while(tokens[i].type==TK_NEG&&i>=0){
+								 result=-result;
+								 i--;
+							 }
+
+							 return result;
+						 }
 			case TK_DEREF:{uint32_t addr= paddr_read(val2,4);return addr;}
 			case TK_AND:return val1 && val2;
 			case TK_OR:return val1 || val2;
@@ -320,5 +330,5 @@ uint32_t eval(int p,int q) {
 			default: assert(0);
 		}
 	}
-	
+
 }
