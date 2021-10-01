@@ -300,7 +300,7 @@ uint32_t eval(int p,int q) {
 		int op = find_dominant_op(p,q); 
 		uint32_t val1 = eval(p, op - 1);
 		uint32_t val2 = eval(op + 1, q);
-		printf("%d\n",op);
+		//printf("%d\n",op);
 		switch (tokens[op].type) {
 			case '+': return val1 + val2;
 			case '-': return val1 - val2;
