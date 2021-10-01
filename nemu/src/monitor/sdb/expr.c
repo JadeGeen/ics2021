@@ -279,7 +279,7 @@ uint32_t eval(int p,int q) {
 								return reg_content;
 							}
 							else{
-								return 0;
+								assert(0);
 							}
 						}
 			default:TODO();
