@@ -284,7 +284,9 @@ uint32_t eval(int p,int q) {
 								assert(0);
 							}
 						}
-			case TK_NEG:return 0;
+			case TK_NEG:
+			case TK_DEREF:
+						return 0;
 			default:TODO();
 
 		}
@@ -318,7 +320,14 @@ uint32_t eval(int p,int q) {
 
 							 return val2;
 						 }
-			case TK_DEREF:{uint32_t addr= paddr_read(val2,4);return addr;}
+			case TK_DEREF:{
+							  int index_deref=op;
+							  while(tokens[index_deref].type==TK_DEREF&&index_deref>=0){
+								  val2=paddr_read(val2,4);
+								  index_deref--;
+							  }
+							  return val2;
+						  }
 			case TK_AND:return val1 && val2;
 			case TK_OR:return val1 || val2;
 			case TK_EQ:return val1 == val2;
