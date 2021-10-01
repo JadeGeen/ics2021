@@ -123,6 +123,7 @@ static bool make_token(char *e) {
 						tokens[nr_token].priority=rules[i].priority;
 						strncpy(tokens[nr_token].str,substr_start+1,substr_len-1);
 						tokens[nr_token].str[substr_len-1]='\0';
+						nr_token++;
 						break;
 
 					case TK_EQ:
