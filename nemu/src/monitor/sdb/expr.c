@@ -283,6 +283,7 @@ uint32_t eval(int p,int q) {
 								assert(0);
 							}
 						}
+			case TK_NEG:return 0;
 			default:TODO();
 
 		}
