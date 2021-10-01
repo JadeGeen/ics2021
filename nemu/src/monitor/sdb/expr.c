@@ -154,7 +154,7 @@ static bool make_token(char *e) {
 	return true;
 }
 
-bool check_parentheses(int p,int q);
+int check_parentheses(int p,int q);
 int find_dominant_op(int p,int q);
 uint32_t eval(int p,int q);
 
@@ -191,24 +191,31 @@ word_t expr(char *e, bool *success) {
 }
 
 
-bool check_parentheses(int p,int q){
+int check_parentheses(int p,int q){
 	int check=0;
+	int index=q;
 	for(int i=p;i<=q;i++){
 		if (tokens[i].type=='('){
 			check++;
 		}
 		else if(tokens[i].type==')'){
 			check--;
+			if(check==0&&i!=q){
+				index=i;
+			}
 		}
 		if(check<0){
-			return false;
+			return -1;
 		}
 	}
-	if(check==0){
-		return true;
+	if(check==0&&index==q&&tokens[p].type=='('&&tokens[q].type==')'){
+		return 1;
+	}
+	else if(check==0){
+		return 0;
 	}
 	else{
-		return false;
+		return -1;
 	}
 
 }
@@ -279,39 +286,38 @@ uint32_t eval(int p,int q) {
 
 		}
 	}
-	else if (check_parentheses(p, q) == true ) {
+	else if (check_parentheses(p, q) == 1 ) {
 		/* The expression is surrounded by a matched pair of parentheses.
 		 * If that is the case, just throw away the parentheses.
 		 */
-		if(tokens[p].type=='(' && tokens[q].type==')'){
-			return eval(p + 1, q - 1);
-		}
-		else {
-			int op = find_dominant_op(p,q); 
-			uint32_t val1 = eval(p, op - 1);
-			uint32_t val2 = eval(op + 1, q);
+		return eval(p + 1, q - 1);
+	}
+	else if (check_parentheses(p,q)==0) {
+		int op = find_dominant_op(p,q); 
+		uint32_t val1 = eval(p, op - 1);
+		uint32_t val2 = eval(op + 1, q);
 
-			switch (tokens[op].type) {
-				case '+': return val1 + val2;
-				case '-': return val1 - val2;
-				case '*': return val1 * val2;
-				case '/': return val1 / val2;
-				case TK_NEG: return -val2;
-				case TK_DEREF:return paddr_read(val2,4);
-				case TK_AND:return val1 && val2;
-				case TK_OR:return val1 || val2;
-				case TK_EQ:return val1 == val2;
-				case TK_NEQ:return val1 != val2;
-				case TK_LEQ:return val1 <= val2;
-				case TK_GEQ:return val1 >= val2;
-				case '<':return val1 < val2;
-				case '>':return val1 > val2;
-				case '!':return !val2;
-				default: assert(0);
-			}
+		switch (tokens[op].type) {
+			case '+': return val1 + val2;
+			case '-': return val1 - val2;
+			case '*': return val1 * val2;
+			case '/': return val1 / val2;
+			case TK_NEG: return -val2;
+			case TK_DEREF:return paddr_read(val2,4);
+			case TK_AND:return val1 && val2;
+			case TK_OR:return val1 || val2;
+			case TK_EQ:return val1 == val2;
+			case TK_NEQ:return val1 != val2;
+			case TK_LEQ:return val1 <= val2;
+			case TK_GEQ:return val1 >= val2;
+			case '<':return val1 < val2;
+			case '>':return val1 > val2;
+			case '!':return !val2;
+			default: assert(0);
 		}
 	}
 	else{
-		return 0;
+		printf("Wrong expresssion\n");
+		assert(0);
 	}
 }
