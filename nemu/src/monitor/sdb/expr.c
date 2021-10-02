@@ -197,6 +197,17 @@ word_t expr(char *e, bool *success) {
 }
 
 
+bool check_leagal(int p,int q){
+	int flag=0;
+	for(int i=p;i<=q;i++){
+		if(tokens[i].type=='(') flag++;
+		else if(tokens[i].type==')')flag--;
+		if(flag<0)return false;
+	}
+	if(flag!=0)return false;
+	else return true;
+}
+
 bool check_parentheses(int p,int q){
 	int check=0;
 	if(tokens[p].type!='('||tokens[q].type!=')'){
