@@ -91,7 +91,12 @@ static int cmd_x(char *args){
 static int cmd_p(char *args){
 	bool valid = NULL;
 	uint32_t res=expr(args,&valid);
-	printf("%u\n",res);
+	if(valid==true){
+		printf("%u\n",res);
+		}
+	else{
+		printf("Invalid expression\n");
+		}
 	return 0;
 
 }
