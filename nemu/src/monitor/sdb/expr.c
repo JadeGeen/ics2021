@@ -299,7 +299,8 @@ uint32_t eval(int p,int q) {
 	}
 	else if (check_parentheses(p,q)==-1){
 		printf("Wrong expresssion\n");
-		assert(0);
+		return 0;
+		//assert(0);
 	}
 	else{
 		int op = find_dominant_op(p,q); 
@@ -337,8 +338,7 @@ uint32_t eval(int p,int q) {
 			case '<':return val1 < val2;
 			case '>':return val1 > val2;
 			case '!':return !val2;
-			default: return 0;
-			//assert(0);
+			default: assert(0);
 		}
 	}
 
