@@ -70,7 +70,7 @@ typedef struct token {
 	int priority;
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[1024] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -80,7 +80,7 @@ static bool make_token(char *e) {
 
 	nr_token = 0;
 
-	while (e[position] != '\0'&& nr_token<32) {
+	while (e[position] != '\0') {
 		/* Try all rules one by one. */
 		for (i = 0; i < NR_REGEX; i ++) {
 			if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
@@ -114,6 +114,7 @@ static bool make_token(char *e) {
 					case TK_HEX:
 						tokens[nr_token].type=rules[i].token_type;
 						tokens[nr_token].priority=rules[i].priority;
+						if(substr_len>32)return false;
 						strncpy(tokens[nr_token].str,substr_start,substr_len);
 						tokens[nr_token].str[substr_len]='\0';
 						nr_token++;
@@ -121,6 +122,7 @@ static bool make_token(char *e) {
 					case TK_REG:
 						tokens[nr_token].type=rules[i].token_type;
 						tokens[nr_token].priority=rules[i].priority;
+						if(substr_len>32)return false;
 						strncpy(tokens[nr_token].str,substr_start+1,substr_len-1);
 						tokens[nr_token].str[substr_len-1]='\0';
 						nr_token++;
@@ -152,18 +154,13 @@ static bool make_token(char *e) {
 			return false;
 		}
 	}
-	if (e[position]!='\0'){
-		return false;
-	}
-	else{
-		return true;
-	}
+	return true;
 }
 
 bool check_parentheses(int p,int q);
 int find_dominant_op(int p,int q);
 uint32_t eval(int p,int q);
-
+bool check_leagel(int p,int q);
 
 word_t expr(char *e, bool *success) {
 	if (!make_token(e)) {
@@ -197,7 +194,7 @@ word_t expr(char *e, bool *success) {
 }
 
 
-bool check_leagal(int p,int q){
+bool check_leagel(int p,int q){
 	int flag=0;
 	for(int i=p;i<=q;i++){
 		if(tokens[i].type=='(') flag++;
@@ -258,7 +255,7 @@ int find_dominant_op(int p,int q){
 extern word_t paddr_read(paddr_t addr,int len);
 
 uint32_t eval(int p,int q) {
-	if (p > q) {
+	if (p > q||check_leagel(p,q)==false) {
 		/* Bad expression */
 		return 0;
 	}
