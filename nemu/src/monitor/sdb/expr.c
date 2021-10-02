@@ -160,7 +160,7 @@ static bool make_token(char *e) {
 	}
 }
 
-int check_parentheses(int p,int q);
+bool check_parentheses(int p,int q);
 int find_dominant_op(int p,int q);
 uint32_t eval(int p,int q);
 
@@ -197,32 +197,22 @@ word_t expr(char *e, bool *success) {
 }
 
 
-int check_parentheses(int p,int q){
+bool check_parentheses(int p,int q){
 	int check=0;
-	int index=q;
+	if(tokens[p].type!='('||tokens[q].type!=')'){
+			return false;
+	}
 	for(int i=p;i<=q;i++){
-		if (tokens[i].type=='('){
+		if(tokens[i].type=='('){
 			check++;
 		}
 		else if(tokens[i].type==')'){
 			check--;
-			if(check==0&&i!=q){
-				index=i;
-			}
 		}
-		if(check<0){
-			return -1;
-		}
+		if(check==0&&i<q)return false;
 	}
-	if(check==0&&index==q&&tokens[p].type=='('&&tokens[q].type==')'){
-		return 1;
-	}
-	else if(check==0){
-		return 0;
-	}
-	else{
-		return -1;
-	}
+	if (check!=0)return false;
+	return true;
 
 }
 
@@ -295,16 +285,11 @@ uint32_t eval(int p,int q) {
 
 		}
 	}
-	else if (check_parentheses(p, q) == 1 ) {
+	else if (check_parentheses(p, q)) {
 		/* The expression is surrounded by a matched pair of parentheses.
 		 * If that is the case, just throw away the parentheses.
 		 */
 		return eval(p + 1, q - 1);
-	}
-	else if (check_parentheses(p,q)==-1){
-		printf("Wrong expresssion\n");
-		return 0;
-		//assert(0);
 	}
 	else{
 		int op = find_dominant_op(p,q); 
