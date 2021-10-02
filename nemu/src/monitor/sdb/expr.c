@@ -153,10 +153,10 @@ static bool make_token(char *e) {
 		}
 	}
 	if (e[position]!='\0'){
-	return false;
+		return false;
 	}
 	else{
-	return true;
+		return true;
 	}
 }
 
