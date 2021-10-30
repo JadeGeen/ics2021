@@ -42,8 +42,6 @@ static def_DHelper(S) {
 
 static def_DHelper(J){
 	sword_t simm = (s->isa.instr.j.simm20 <<20) | (s->isa.instr.j.simm19_12 <<12) | (s->isa.instr.j.simm11 <<11) | (s->isa.instr.j.simm10_1 <<1);
-	simm=(simm<<11)>>11;
-	printf("%d\n",simm);
 	decode_op_i(s, id_src1, simm, false);
 	decode_op_r(s, id_dest, s->isa.instr.j.rd, true);
 }
