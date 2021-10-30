@@ -44,7 +44,7 @@ typedef struct {
 			uint32_t simm19_12 : 8;
 			uint32_t simm11    : 1;
 			uint32_t simm10_1  :10;
-			uint32_t simm20    : 1;
+			int32_t  simm20    : 1;
 		} j;
 		uint32_t val;
 	} instr;
