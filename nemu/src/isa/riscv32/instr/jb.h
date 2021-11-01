@@ -10,10 +10,17 @@ def_EHelper(jalr){
 
 def_EHelper(beq){
 	if(*dsrc1==*dsrc2)
-	rtl_j(s, s->pc + id_dest->imm);
+		rtl_j(s, s->pc + id_dest->imm);
 }
 
 def_EHelper(bne){
 	if(*dsrc1!=*dsrc2)
-	rtl_j(s, s->pc + id_dest->imm);
+		rtl_j(s, s->pc + id_dest->imm);
+}
+
+def_EHelper(blt){
+	int32_t temp=*dsrc1;
+	int32_t temp2=*dsrc2;
+	if(temp<temp2)
+		rtl_j(s, s->pc + id_dest->imm);
 }
