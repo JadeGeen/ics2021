@@ -14,9 +14,9 @@ def_EHelper(sltiu){
 	int32_t temp = *dsrc1;
 	int32_t temp2 = id_src2->imm;
 	if(temp < temp2)
-	rtl_li(s, ddest, 1);
+		rtl_li(s, ddest, 1);
 	else
-	rtl_li(s, ddest, 0);
+		rtl_li(s, ddest, 0);
 }
 
 def_EHelper(add){
@@ -29,11 +29,15 @@ def_EHelper(sub){
 
 def_EHelper(sltu){
 	if(*dsrc1<*dsrc2)
-	rtl_li(s, ddest, 1);
+		rtl_li(s, ddest, 1);
 	else
-	rtl_li(s, ddest, 0);
+		rtl_li(s, ddest, 0);
 }
 
 def_EHelper(xor){
 	rtl_xor(s, ddest, dsrc1, dsrc2);
+}
+
+def_EHelper(or){
+	rtl_or(s, ddest, dsrc1, dsrc2);
 }
