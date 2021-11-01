@@ -26,3 +26,10 @@ def_EHelper(add){
 def_EHelper(sub){
 	rtl_sub(s, ddest, dsrc1, dsrc2);
 }
+
+def_EHelper(sltu){
+	if(*dsrc1<*dsrc2)
+	rtl_li(s, ddest, 1);
+	else
+	rtl_li(s, ddest, 0);
+}
