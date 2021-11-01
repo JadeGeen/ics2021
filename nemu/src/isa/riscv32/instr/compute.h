@@ -29,7 +29,8 @@ def_EHelper(andi){
 
 def_EHelper(srai){
 	uint32_t shamt = (id_src2->imm)&0x11111;
-	rtl_srai(s, ddest, dsrc1, shamt);
+	int temp = *dsrc1;
+	rtl_li(s, ddest, temp>>shamt);
 }
 
 def_EHelper(add){
