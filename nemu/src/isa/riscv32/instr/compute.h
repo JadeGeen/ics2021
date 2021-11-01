@@ -33,3 +33,7 @@ def_EHelper(sltu){
 	else
 	rtl_li(s, ddest, 0);
 }
+
+def_EHelper(xor){
+	rtl_xor(s, ddest, dsrc1, dsrc2);
+}
