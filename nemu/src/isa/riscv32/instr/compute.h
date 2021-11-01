@@ -19,6 +19,10 @@ def_EHelper(sltiu){
 		rtl_li(s, ddest, 0);
 }
 
+def_EHelper(andi){
+	rtl_andi(s, ddest, dsrc1, id_src2->imm);
+}
+
 def_EHelper(add){
 	rtl_add(s, ddest, dsrc1, dsrc2);
 }
