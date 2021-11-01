@@ -23,6 +23,12 @@ def_EHelper(andi){
 	rtl_andi(s, ddest, dsrc1, id_src2->imm);
 }
 
+def_EHelper(srai){
+	uint32_t shamt = (id_src2->imm)&0x11111;
+	int32_t temp = *dsrc1;
+	rtl_li(s, ddest, temp>>shamt);
+}
+
 def_EHelper(add){
 	rtl_add(s, ddest, dsrc1, dsrc2);
 }
