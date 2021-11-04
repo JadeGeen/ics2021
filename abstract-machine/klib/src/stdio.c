@@ -9,7 +9,7 @@ char *itoa(int value, char *string, int radix){
 	int i;
 	char temp[100]={0};
 	for(i=0;value>0;i++){
-		temp[i]=value%radix;
+		temp[i]=value%radix+'0';
 		value=value/radix;
 	}
 	for(int j=i-1;j>=0;j--){
@@ -50,8 +50,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 		}
 	}
 	*str='\0';
-	int ret=str-out;
-	return ret;
+	return (str-out);
 }
 
 int sprintf(char *out, const char *fmt, ...) {
