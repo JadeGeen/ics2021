@@ -12,7 +12,7 @@ char *itoa(int value, char *string, int radix){
 		temp[i]=value%radix;
 		value=value/radix;
 	}
-	for(int j=i-1;j>=0;j++){
+	for(int j=i-1;j>=0;j--){
 		*string=temp[j];
 		string++;
 	}
