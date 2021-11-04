@@ -27,7 +27,12 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 	char *str;
 	char *s;
 	int len;
-	for(str=out;fmt!=NULL;fmt++){
+	for(str=out;*fmt;fmt++){
+		if(*fmt!='%'){
+			*str=*fmt;
+			fmt++;
+			continue;
+		}
 		fmt++;//skip the first'%'
 		switch(*fmt){
 			case 's':
