@@ -30,7 +30,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 	for(str=out;*fmt;fmt++){
 		if(*fmt!='%'){
 			*str=*fmt;
-			fmt++;
+			str++;
 			continue;
 		}
 		fmt++;//skip the first'%'
