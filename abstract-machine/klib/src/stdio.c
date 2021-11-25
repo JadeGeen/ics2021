@@ -72,10 +72,7 @@ int printf(const char *fmt, ...){
 	va_start(args,fmt);
 	i=vsprintf(buf, fmt, args);
 	va_end(args);
-
-	int j=0;
-	while(buf[j]!='\0')
-		putch(buf[j]);
+	putstr(buf);
 	return i;
 }
 int snprintf(char *out, size_t n, const char *fmt, ...) {
