@@ -24,6 +24,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 	char *str;
 	char *s;
 	int len;
+	char c;
 	for(str=out;*fmt;fmt++){
 		if(*fmt!='%'){
 			*str=*fmt;
@@ -43,6 +44,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 				break;
 			case 'd':
 				str=itoa(va_arg(ap, int),str,10);
+				break;
+			case 'c':
+				c=va_arg(ap,int);
+				*str=c;
+				str++;
 				break;
 		}
 	}
