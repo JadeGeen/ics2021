@@ -19,9 +19,6 @@ char *itoa(int value, char *string, int radix){
 	return string;//directly return last point
 }
 
-int printf(const char *fmt, ...) {
-	panic("Not implemented");
-}
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
 	char *str;
@@ -62,6 +59,19 @@ int sprintf(char *out, const char *fmt, ...) {
 	return i;
 }
 
+int printf(const char *fmt, ...){
+	va_list args;
+	int i;
+	char buf[2048]={'\0'};
+	va_start(args,fmt);
+	i=vsprintf(buf, fmt, args);
+	va_end(args);
+
+	int j=0;
+	while(buf[j]!='\0')
+		putch(buf[j]);
+	return i;
+}
 int snprintf(char *out, size_t n, const char *fmt, ...) {
 	panic("Not implemented");
 }
