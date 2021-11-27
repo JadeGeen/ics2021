@@ -102,6 +102,10 @@ def_EHelper(mulh){
 	rtl_muls_hi(s, ddest, dsrc1, dsrc2);
 }
 
+def_EHelper(mulhu){
+	rtl_mulu_hi(s, ddest, dsrc1, dsrc2);
+}
+
 def_EHelper(div){
 	rtl_divs_q(s, ddest, dsrc1, dsrc2);
 }
