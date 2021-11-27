@@ -302,7 +302,7 @@ int sprintf(char *out, const char *fmt, ...) {
 int printf(const char *fmt, ...){
 	va_list args;
 	int i;
-	char buf[16384];
+	char buf[2048];
 	va_start(args,fmt);
 	i=vsprintf(buf, fmt, args);
 	va_end(args);
