@@ -21,14 +21,17 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
+  	int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
+  	if (w == 0 || h == 0) return;
+  	int width=inw(VGACTL_ADDR+2);
+  	uint32_t *pixels=(uint32_t *)ctl->pixels;
+  	int i=0;
+  	for(int y0=y;y0<y+h;y0++)
+  		for(int x0=x;x0<x+w;x0++,i++)
+  			outl(FB_ADDR+y0*width+x0,pixels[i]);
   	if (ctl->sync) {
     		outl(SYNC_ADDR, 1);
   	}
-  	int w = inw(VGACTL_ADDR+2);
-	int h = inw(VGACTL_ADDR); 
-	uint32_t *pixels=ctl->pixels;
-	for(int i=0;i<w*h;i++)
-		outl(FB_ADDR+i*4,pixels[i]);
 }
 
 void __am_gpu_status(AM_GPU_STATUS_T *status) {
