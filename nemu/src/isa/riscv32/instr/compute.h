@@ -10,6 +10,13 @@ def_EHelper(addi){
 	rtl_addi(s, ddest, dsrc1, id_src2->imm);
 }
 
+def_EHelper(slti){
+	if(*dsrc1 < id_src2->imm)
+		rtl_li(s, ddest, 1);
+	else
+		rtl_li(s, ddest, 0);
+}
+
 def_EHelper(sltiu){
 	int32_t temp = *dsrc1;
 	int32_t temp2 = id_src2->imm;
