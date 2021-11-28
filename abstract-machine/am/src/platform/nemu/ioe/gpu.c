@@ -21,11 +21,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
-	int w = inw(VGACTL_ADDR+2);
-	int h = inw(VGACTL_ADDR); 
-	uint32_t *pixels=ctl->pixels;
-	for(int i=0;i<w*h;i++)
-		*(pixels+i)=inl(FB_ADDR+i*4);
+	if (ctl->w==0||ctl->h==0)return;
   	if (ctl->sync) {
     		outl(SYNC_ADDR, 1);
   	}
