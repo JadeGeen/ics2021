@@ -13,18 +13,18 @@ void __am_gpu_init() {
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
-  	uint32_t width=inw(VGACTL_ADDR+2),height=inw(VGACTL_ADDR);
-  *cfg = (AM_GPU_CONFIG_T) {
-    .present = true, .has_accel = false,
-    .width = width, .height = height,
-    .vmemsz = width*height*4
-  };
+  	int width=(inl(VGACTL_ADDR)>>16)&0xffff,height=(inl(VGACTL_ADDR))&0xffff;
+  	*cfg = (AM_GPU_CONFIG_T) {
+    	.present = true, .has_accel = false,
+    	.width = width, .height = height,
+    	.vmemsz = width*height*4
+  	};
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   	int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
   	if (w == 0 || h == 0) return;
-  	uint32_t width=inw(VGACTL_ADDR+2);
+  	int width=(inl(VGACTL_ADDR)>>16)&0xffff;
   	uint32_t *pixels=(uint32_t *)ctl->pixels;
   	int i=0;
   	for(int y0=y;y0<y+h;y0++)
