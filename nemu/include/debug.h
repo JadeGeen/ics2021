@@ -26,4 +26,3 @@
 
 #endif
 
-volatile static int dummy;
