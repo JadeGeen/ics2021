@@ -8,8 +8,6 @@
 #include <generated/autoconf.h>
 #include <macro.h>
 
-volatile static int dummy; 
-
 #ifdef CONFIG_TARGET_AM
 #include <klib.h>
 #else
@@ -34,3 +32,5 @@ typedef uint16_t ioaddr_t;
 #include <debug.h>
 
 #endif
+
+volatile static int dummy; 
