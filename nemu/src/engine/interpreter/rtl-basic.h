@@ -43,7 +43,7 @@ def_rtl_compute_reg_imm(sraw)
 #define rtl_sraiw rtl_srawi
 #endif
 
-def_rtl(setrelop, uint32_t relop, rtlreg_t *dest,
+static inline def_rtl(setrelop, uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, const rtlreg_t *src2) {
   *dest = interpret_relop(relop, *src1, *src2);
 }
