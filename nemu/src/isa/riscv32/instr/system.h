@@ -41,5 +41,8 @@ def_EHelper(mret){
 }
 
 def_EHelper(ecall){
+#ifdef CONFIG_ETRACE
+	printf("raise exception no.1 yield\n");
+#endif
 	rtl_j(s, isa_raise_intr(1,s->pc+4));
 }
