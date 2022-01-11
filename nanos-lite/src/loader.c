@@ -16,18 +16,18 @@ extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 static uintptr_t loader(PCB *pcb, const char *filename) {
 	Elf_Ehdr elfhdr;
 	ramdisk_read(&elfhdr,0,sizeof(Elf_Ehdr));
-	Elf_Phdr prohdr;
+	Elf_Phdr prohdr[elfhdr.e_phentsize];
+	size_t phentsize = elfhdr.e_phentsize;
 	for(int i = 0;i<elfhdr.e_phnum;i++)
 	{
-		size_t phentsize = elfhdr.e_phentsize;
-		ramdisk_read(&prohdr,elfhdr.e_phoff + i*phentsize, phentsize);
-		if(prohdr.p_type == PT_LOAD)
+		ramdisk_read(&prohdr[i],elfhdr.e_phoff + i*phentsize, phentsize);
+		if(prohdr[i].p_type == PT_LOAD)
 		{
-			ramdisk_read((void*)prohdr.p_vaddr,prohdr.p_offset,prohdr.p_filesz);
-			memset((void*)(prohdr.p_vaddr + prohdr.p_filesz),0,prohdr.p_memsz - prohdr.p_filesz);
+			ramdisk_read((void*)prohdr[i].p_vaddr,prohdr[i].p_offset,prohdr[i].p_filesz);
+			memset((void*)(prohdr[i].p_vaddr + prohdr[i].p_filesz),0,prohdr[i].p_memsz - prohdr[i].p_filesz);
 		}
 	}
-	return elfhdr.e_entry;
+	return 0;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
