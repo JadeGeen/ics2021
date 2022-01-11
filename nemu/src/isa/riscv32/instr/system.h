@@ -49,7 +49,7 @@ def_EHelper(ecall){
 		default:Log("unknown distinguish_num:%u\n",distinguish_num);assert(0);
 	}
 #ifdef CONFIG_ETRACE
-	Log("raise exception no.%u yield\n",exceptionindex);
+	Log("raise exception no.%u\n",exceptionindex);
 #endif
 	rtl_j(s, isa_raise_intr(exceptionindex,s->pc+4));
 }
