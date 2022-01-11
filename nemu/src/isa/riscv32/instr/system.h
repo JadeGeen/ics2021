@@ -41,7 +41,7 @@ def_EHelper(mret){
 }
 
 def_EHelper(ecall){
-	int distinguish_num = cpu.gpr[17]._32;
+	/*int distinguish_num = cpu.gpr[17]._32;
 	uint32_t exceptionindex = 0;
 	switch(distinguish_num){
 		case -1:exceptionindex = 1;break;
@@ -50,6 +50,6 @@ def_EHelper(ecall){
 	}
 #ifdef CONFIG_ETRACE
 	Log("raise exception no.%u",exceptionindex);
-#endif
-	rtl_j(s, isa_raise_intr(exceptionindex,s->pc));
+#endif*/
+	rtl_j(s, isa_raise_intr(2,cpu.pc));
 }
