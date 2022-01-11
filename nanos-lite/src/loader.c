@@ -25,7 +25,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 		if(prohdr[i].p_type == PT_LOAD)
 		{
 			ramdisk_read((void*)prohdr[i].p_vaddr,prohdr[i].p_offset, prohdr[i].p_filesz);
-			printf("vaddr = 0x%08x,offset = 0x%08x,filesz = 0x%08x\n",prohdr[i].p_vaddr,prohdr[i].p_offset, prohdr[i].p_filesz);
+			//printf("vaddr = 0x%08x,offset = 0x%08x,filesz = 0x%08x\n",prohdr[i].p_vaddr,prohdr[i].p_offset, prohdr[i].p_filesz);
 			memset((void*)(prohdr[i].p_vaddr + prohdr[i].p_filesz), 0, prohdr[i].p_memsz - prohdr[i].p_filesz);
 		}
 	}
