@@ -52,5 +52,6 @@ def_EHelper(ecall){
 	Log("raise exception no.%u",exceptionindex);
 #endif*/
 	isa_raise_intr(2,cpu.pc);
+	printf("ecall %d\n",cpu.gpr[10]._32);
 	rtl_j(s, cpu.mtvec);
 }
