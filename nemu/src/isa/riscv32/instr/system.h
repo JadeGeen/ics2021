@@ -51,5 +51,5 @@ def_EHelper(ecall){
 #ifdef CONFIG_ETRACE
 	Log("raise exception no.%u",exceptionindex);
 #endif
-	rtl_j(s, isa_raise_intr(exceptionindex,s->pc+4));
+	rtl_j(s, isa_raise_intr(exceptionindex,s->pc));
 }
