@@ -41,8 +41,15 @@ def_EHelper(mret){
 }
 
 def_EHelper(ecall){
+	int distinguish_num = cpu.gpr[17]._32;
+	uint32_t exceptionindex = 0;
+	switch(distinguish_num){
+		case -1:exceptionindex = 1;break;
+		case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:exceptionindex = 2;break;
+		default:Log("unknown distinguish_num:%u\n",distinguish_num);assert(0);
+	}
 #ifdef CONFIG_ETRACE
-	printf("raise exception no.1 yield\n");
+	Log("raise exception no.%u yield\n",exceptionindex);
 #endif
-	rtl_j(s, isa_raise_intr(1,s->pc+4));
+	rtl_j(s, isa_raise_intr(exceptionindex,s->pc+4));
 }
