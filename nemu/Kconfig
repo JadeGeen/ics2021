@@ -159,7 +159,7 @@ config ETRACE
   bool "Enable exception tracer"
   default n
 
-config ETRACE
+config STRACE
   depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
   bool "Enable system tracer"
   default n
