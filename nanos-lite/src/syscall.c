@@ -19,9 +19,7 @@ void do_syscall(Context *c) {
 	a[1] = c->GPR2;
 	a[2] = c->GPR3;
 	a[3] = c->GPR4;
-#ifdef CONFIG_STRACE
 	printf("syscall ID = %d, arg1 = %d, arg2 = %d, arg3 = %d\n", a[0], a[1], a[2], a[3]);
-#endif
 	switch (a[0]) {
 		case SYS_exit://exit
 			halt(0);
