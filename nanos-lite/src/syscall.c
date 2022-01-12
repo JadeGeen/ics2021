@@ -19,7 +19,7 @@ void do_syscall(Context *c) {
 	a[1] = c->GPR2;
 	a[2] = c->GPR3;
 	a[3] = c->GPR4;
-	printf("syscall %d\n",a[0]);
+	//printf("syscall %d\n",a[0]);
 	switch (a[0]) {
 		case SYS_exit://exit
 			halt(0);
@@ -27,7 +27,7 @@ void do_syscall(Context *c) {
 			break;
 		case SYS_yield://yield
 			yield();
-			printf("sys_yield\n");
+			//printf("sys_yield\n");
 			c->GPRx = 0;
 			break;
 		case SYS_write:
