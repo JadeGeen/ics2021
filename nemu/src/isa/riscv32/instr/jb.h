@@ -4,8 +4,8 @@ def_EHelper(jal){
 }
 
 def_EHelper(jalr){
-	rtl_li(s, ddest, 4 + s->pc);
 	rtl_j(s, *dsrc1 + id_src2->imm);
+	rtl_li(s, ddest, 4 + s->pc);
 }
 
 def_EHelper(beq){

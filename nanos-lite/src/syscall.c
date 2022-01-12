@@ -26,7 +26,8 @@ void do_syscall(Context *c) {
 			c->GPRx = 0;
 			break;*/
 		case SYS_yield://yield
-			yield();
+			//yield();
+			printf("sys_yield\n");
 			c->GPRx = 0;
 			break;
 		case SYS_write:
