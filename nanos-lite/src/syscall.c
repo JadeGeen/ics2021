@@ -21,10 +21,10 @@ void do_syscall(Context *c) {
 	a[3] = c->GPR4;
 	printf("syscall %d\n",a[0]);
 	switch (a[0]) {
-		/*case 0://exit
+		case 0://exit
 			halt(0);
 			c->GPRx = 0;
-			break;*/
+			break;
 		case SYS_yield://yield
 			//yield();
 			printf("sys_yield\n");
