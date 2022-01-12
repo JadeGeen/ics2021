@@ -37,9 +37,7 @@ def_EHelper(csrrw){
 }
 
 def_EHelper(mret){
-	s->pc = cpu.mepc;
-	s->dnpc = cpu.mepc+4;
-	//rtl_j(s, cpu.mepc);
+	rtl_j(s, cpu.mepc);
 }
 
 def_EHelper(ecall){
@@ -53,7 +51,7 @@ def_EHelper(ecall){
 #ifdef CONFIG_ETRACE
 	Log("raise exception no.%u",exceptionindex);
 #endif*/
-	printf("ecall %d\n",cpu.gpr[17]._32);	
-	isa_raise_intr(2,cpu.pc);
+	printf("ecall %d\n",cpu.gpr[17]._32);
+	isa_raise_intr(11,cpu.pc);
 	rtl_j(s, cpu.mtvec);
 }
