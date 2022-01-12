@@ -14,7 +14,7 @@ Context* __am_irq_handle(Context *c) {
 		default:assert(0);
 		}
 #ifdef CONFIG_ETRACE
-		Log("raise exception no.%u\n",ev.event);
+		printf("raise exception no.%u\n",ev.event);
 #endif		
 		c = user_handler(ev, c);
 		assert(c != NULL);
