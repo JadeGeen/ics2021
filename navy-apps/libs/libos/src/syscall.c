@@ -52,13 +52,11 @@ intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
 
 void _exit(int status) {
 	_syscall_(SYS_exit, status, 0, 0);
-	//printf("exit fail\n");
 	while (1);
 }
 
 int _open(const char *path, int flags, mode_t mode) {
-	_exit(SYS_open);
-	return 0;
+	return _syscall_(SYS_open, (intptr_t)path, flags, count);
 }
 
 int _write(int fd, void *buf, size_t count) {
@@ -79,18 +77,15 @@ void *_sbrk(intptr_t increment) {
 }
 
 int _read(int fd, void *buf, size_t count) {
-	_exit(SYS_read);
-	return 0;
+	return _syscall_(SYS_read, fd,(intptr_t)buf, count);
 }
 
 int _close(int fd) {
-	_exit(SYS_close);
-	return 0;
+	return _syscall_(SYS_close, fd, 0, 0);
 }
 
 off_t _lseek(int fd, off_t offset, int whence) {
-	_exit(SYS_lseek);
-	return 0;
+	return _syscall_(SYS_lseek, fd, offset, whence);
 }
 
 int _gettimeofday(struct timeval *tv, struct timezone *tz) {
