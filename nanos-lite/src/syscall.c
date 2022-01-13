@@ -1,12 +1,13 @@
 #include <common.h>
 #include "syscall.h"
 
-int sys_write(int fd, char *buf, size_t count){
+int sys_write(int fd, void *buf, size_t count){
 	if(fd==1||fd==2){
 		size_t i = 0;
+		char *buf1 = (char*)buf;
 		for(;i<count;i++){
-			putch(*buf);
-			buf++;
+			putch(*buf1);
+			buf1++;
 		}
 		return i;
 	}
@@ -43,7 +44,7 @@ void do_syscall(Context *c) {
 			c->GPRx = fs_read(a[1], (void*)a[2], a[3]);
 			break;
 		case SYS_write:
-			c->GPRx = fs_write(a[1], (void*)a[2], a[3]);
+			c->GPRx = sys_write(a[1], (void*)a[2], a[3]);
 			break;
 		case SYS_close:
 			c->GPRx = fs_close(a[1]);
