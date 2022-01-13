@@ -1,6 +1,12 @@
 #include <common.h>
 #include "syscall.h"
 
+extern int fs_open(const char *pathname, int flags, int mode);
+extern size_t fs_read(int fd, void *buf, size_t len);
+extern size_t fs_write(int fd, void *buf, size_t len);
+extern size_t fs_lseek(int fd, size_t offset, int whence);
+extern int fs_close(int fd);
+
 int sys_write(int fd, void *buf, size_t count){
 	if(fd==1||fd==2){
 		size_t i = 0;
@@ -11,14 +17,11 @@ int sys_write(int fd, void *buf, size_t count){
 		}
 		return i;
 	}
-	return -1;
+	else if (fd>2)
+		return fs_write(fd, buf, count);
+	else
+		return -1;
 }
-
-extern int fs_open(const char *pathname, int flags, int mode);
-extern size_t fs_read(int fd, void *buf, size_t len);
-extern size_t fs_write(int fd, void *buf, size_t len);
-extern size_t fs_lseek(int fd, size_t offset, int whence);
-extern int fs_close(int fd);
 
 void do_syscall(Context *c) {
 	uintptr_t a[4];
