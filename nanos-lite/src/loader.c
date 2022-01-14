@@ -24,8 +24,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	fs_read(fd, &elfhdr, sizeof(Elf_Ehdr));
 	Elf_Phdr prohdr[elfhdr.e_phentsize];
 	size_t phentsize = elfhdr.e_phentsize;
-	//printf("phentsize=%d\n",phentsize);
-	//printf("entry=0x%08x\n",elfhdr.e_entry);
+	printf("phentsize=%d\n",phentsize);
+	printf("entry=0x%08x\n",elfhdr.e_entry);
 	for(int i = 0;i<elfhdr.e_phnum;i++)
 	{
 		fs_lseek(fd, elfhdr.e_phoff + i*phentsize, SEEK_SET);
@@ -34,7 +34,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 		{
 			//fs_lseek(fd, prohdr[i].p_offset, SEEK_SET);
 			ramdisk_read((void*)prohdr[i].p_vaddr, prohdr[i].p_offset, prohdr[i].p_filesz);
-			//printf("vaddr = 0x%08x,offset = 0x%08x,filesz = 0x%08x\n",prohdr[i].p_vaddr,prohdr[i].p_offset, prohdr[i].p_filesz);
+			printf("vaddr = 0x%08x,offset = 0x%08x,filesz = 0x%08x\n",prohdr[i].p_vaddr,prohdr[i].p_offset, prohdr[i].p_filesz);
 			memset((void*)(prohdr[i].p_vaddr + prohdr[i].p_filesz), 0, prohdr[i].p_memsz - prohdr[i].p_filesz);
 		}
 	}
