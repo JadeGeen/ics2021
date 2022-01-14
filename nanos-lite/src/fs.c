@@ -69,7 +69,7 @@ size_t fs_read(int fd, void *buf, size_t len){
 	if(file_table[fd].read == NULL)
 		ret = ramdisk_read(buf, offset, readlen);
 	else
-		ret = file_table[fd].read(buf, offset, readlen);
+		ret = file_table[fd].read(buf, offset, len);
 	file_table[fd].open_offset += readlen;
 	return ret;
 }
@@ -82,7 +82,7 @@ size_t fs_write(int fd, const void *buf, size_t len){
 	if(file_table[fd].write == NULL)
 		ret = ramdisk_write(buf, offset, writelen);
 	else
-		ret = file_table[fd].write(buf, offset, writelen);
+		ret = file_table[fd].write(buf, offset, len);
 	file_table[fd].open_offset += writelen;
 	return ret;
 }
