@@ -26,7 +26,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t phentsize = elfhdr.e_phentsize;
 	printf("phentsize=%d\n",phentsize);
 	printf("entry=0x%08x\n",elfhdr.e_entry);
-	printf("entry=0x%08x\n",elfhdr.e_phnum);
+	printf("num=0x%08x\n",elfhdr.e_phnum);
 	for(int i = 0;i<elfhdr.e_phnum;i++)
 	{
 		ramdisk_read(&prohdr[i], elfhdr.e_phoff + i*phentsize, phentsize);
@@ -37,6 +37,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 			memset((void*)(prohdr[i].p_vaddr + prohdr[i].p_filesz), 0, prohdr[i].p_memsz - prohdr[i].p_filesz);
 		}
 	}
+	fd = fs_close(fd);
 	return elfhdr.e_entry;
 }
 
