@@ -26,6 +26,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	size_t phentsize = elfhdr.e_phentsize;
 	printf("phentsize=%d\n",phentsize);
 	printf("entry=0x%08x\n",elfhdr.e_entry);
+	printf("entry=0x%08x\n",elfhdr.e_phnum);
 	for(int i = 0;i<elfhdr.e_phnum;i++)
 	{
 		ramdisk_read(&prohdr[i], elfhdr.e_phoff + i*phentsize, phentsize);
