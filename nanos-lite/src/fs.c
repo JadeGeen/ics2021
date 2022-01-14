@@ -9,7 +9,7 @@ typedef struct {
 	size_t disk_offset;
 	ReadFn read;
 	WriteFn write;
-	size_t cur_offset;
+	size_t open_offset;
 } Finfo;
 
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
@@ -46,7 +46,7 @@ int fs_open(const char *pathname, int flags, int mode){
 	int i = 0;
 	for(;i < file_num;i++){
 		if(strcmp(pathname, file_table[i].name) == 0){
-			file_table[i].cur_offset = 0;
+			file_table[i].open_offset = 0;
 			return i;
 		}
 	}
@@ -59,49 +59,49 @@ extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 
 size_t fs_read(int fd, void *buf, size_t len){
-	size_t readlen = lenchoose(len, file_table[fd].size - file_table[fd].cur_offset);
-	assert(readlen + file_table[fd].cur_offset <= file_table[fd].size);
-	size_t offset = file_table[fd].disk_offset + file_table[fd].cur_offset;
+	size_t readlen = lenchoose(len, file_table[fd].size - file_table[fd].open_offset);
+	assert(readlen + file_table[fd].open_offset <= file_table[fd].size);
+	size_t offset = file_table[fd].disk_offset + file_table[fd].open_offset;
 	size_t ret = 0;
 	if(file_table[fd].read == NULL)
 		ret = ramdisk_read(buf, offset, readlen);
 	else
 		ret = file_table[fd].read(buf, offset, readlen);
-	file_table[fd].cur_offset += readlen;
+	file_table[fd].open_offset += readlen;
 	return ret;
 }
 
 size_t fs_write(int fd, const void *buf, size_t len){
-	size_t writelen = lenchoose(len, file_table[fd].size - file_table[fd].cur_offset);
-	assert(writelen + file_table[fd].cur_offset <= file_table[fd].size);
-	size_t offset = file_table[fd].disk_offset + file_table[fd].cur_offset;
+	size_t writelen = lenchoose(len, file_table[fd].size - file_table[fd].open_offset);
+	assert(writelen + file_table[fd].open_offset <= file_table[fd].size);
+	size_t offset = file_table[fd].disk_offset + file_table[fd].open_offset;
 	size_t ret = 0;
 	if(file_table[fd].write == NULL)
 		ret = ramdisk_write(buf, offset, writelen);
 	else
 		ret = file_table[fd].write(buf, offset, writelen);
-	file_table[fd].cur_offset += writelen;
+	file_table[fd].open_offset += writelen;
 	return ret;
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence){
 	switch(whence){
 		case SEEK_SET:
-			file_table[fd].cur_offset = offset;
+			file_table[fd].open_offset = offset;
 			break;
 		case SEEK_CUR:
-			file_table[fd].cur_offset += offset;
+			file_table[fd].open_offset += offset;
 			break;
 		case SEEK_END:
-			file_table[fd].cur_offset = file_table[fd].size + offset;
+			file_table[fd].open_offset = file_table[fd].size + offset;
 			break;
 		default:
 			panic("Unknown whence %d", whence);
 	}
-	return file_table[fd].cur_offset;
+	return file_table[fd].open_offset;
 }
 
 int fs_close(int fd){
-	file_table[fd].cur_offset = 0;
+	file_table[fd].open_offset = 0;
 	return 0;
 }
