@@ -8,5 +8,6 @@
 extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);
 
 int main() {
-  return _syscall_(SYS_yield, 0, 0, 0);
+	printf("start dummy\n");
+  	return _syscall_(SYS_yield, 0, 0, 0);
 }
