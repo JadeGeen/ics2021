@@ -66,11 +66,12 @@ size_t fs_read(int fd, void *buf, size_t len){
 	assert(readlen + file_table[fd].open_offset <= file_table[fd].size);
 	size_t offset = file_table[fd].disk_offset + file_table[fd].open_offset;
 	size_t ret = 0;
-	if(file_table[fd].read == NULL)
+	if(file_table[fd].read == NULL){
 		ret = ramdisk_read(buf, offset, readlen);
+		file_table[fd].open_offset += readlen;
+	}
 	else
 		ret = file_table[fd].read(buf, offset, len);
-	file_table[fd].open_offset += readlen;
 	return ret;
 }
 
@@ -79,11 +80,12 @@ size_t fs_write(int fd, const void *buf, size_t len){
 	assert(writelen + file_table[fd].open_offset <= file_table[fd].size);
 	size_t offset = file_table[fd].disk_offset + file_table[fd].open_offset;
 	size_t ret = 0;
-	if(file_table[fd].write == NULL)
+	if(file_table[fd].write == NULL){
 		ret = ramdisk_write(buf, offset, writelen);
+		file_table[fd].open_offset += writelen;
+	}
 	else
-		ret = file_table[fd].write(buf, offset, len);
-	file_table[fd].open_offset += writelen;
+		ret = file_table[fd].write(buf, offset, len);//right for fd =1,fd = 2, maybe error for others
 	return ret;
 }
 
