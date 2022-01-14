@@ -7,6 +7,7 @@ size_t fs_write(int fd, void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
 
+/*
 int sys_write(int fd, void *buf, size_t count){
 	if(fd==1||fd==2){
 		size_t i = 0;
@@ -22,6 +23,7 @@ int sys_write(int fd, void *buf, size_t count){
 	else
 		return -1;
 }
+*/
 
 void do_syscall(Context *c) {
 	uintptr_t a[4];
@@ -47,7 +49,7 @@ void do_syscall(Context *c) {
 			c->GPRx = fs_read(a[1], (void*)a[2], a[3]);
 			break;
 		case SYS_write:
-			c->GPRx = sys_write(a[1], (void*)a[2], a[3]);
+			c->GPRx = fs_write(a[1], (void*)a[2], a[3]);
 			break;
 		case SYS_close:
 			c->GPRx = fs_close(a[1]);
