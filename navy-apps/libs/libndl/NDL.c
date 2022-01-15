@@ -26,12 +26,6 @@ int NDL_PollEvent(char *buf, int len) {
 	}
 	*/
 	int ret = fread(buf, 1, len, fp);
-	if(ret == 0)return 0;
-	for(int i = 0;i<len;i++)
-		if(buf[i]=='\n'){
-			buf[i]='\0';
-			break;
-		}
 	fclose(fp);
 	return ret;
 }
