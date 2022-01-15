@@ -18,14 +18,13 @@ uint32_t NDL_GetTicks() {
 int NDL_PollEvent(char *buf, int len) {
 	FILE* fp = fopen("/dev/events","r");
 	memset(buf, 0, len);
-	/*char ch = -1;
-	int i = 0;
-	while(i<len&&((ch =fgetc(fp))!=EOF)){
-		buf[i++]=ch;
-		//ch = fgetc(fp);
-	}
-	*/
 	int ret = fread(buf, 1, len, fp);
+	if(ret == 0)return 0;
+	for(int i = 0;i<len;i++)
+		if(buf[i]=='\n'){
+			buf[i]='\0';
+			break;
+		}
 	fclose(fp);
 	return ret;
 }
