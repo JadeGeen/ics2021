@@ -25,8 +25,7 @@ int NDL_PollEvent(char *buf, int len) {
 		//ch = fgetc(fp);
 	}
 	fclose(fp);
-	if(i == 0)return 0;
-	else return 1;
+	return i?1:0;
 	/*int ret = fread(buf, 1, len, fp);
 	if(ret == 0)return 0;
 	for(int i = 0;i<len;i++)
