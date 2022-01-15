@@ -10,7 +10,7 @@ int main(){
 		t = NDL_GetTicks();
 		if(t / 500 != temp){
 			temp = t/500;
-			printf("print every 0.5s : %d time\n",temp);
+			printf("print every 0.5s : %dth time\n",temp);
 		}
 	}
 	return 0;
