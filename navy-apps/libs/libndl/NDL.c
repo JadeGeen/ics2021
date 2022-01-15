@@ -46,7 +46,7 @@ void NDL_OpenCanvas(int *w, int *h) {
 		canvas_h = *h<=screen_h? *h:screen_h;
 	}
 	canvas = (uint32_t*)malloc(sizeof(uint32_t)*(*w)*(*h));
-	memset(canvas,0,sizeof(canvas));
+	memset(canvas , 0, sizeof(canvas));
 	offset_w = (screen_w - canvas_w)/2;
 	offset_h = (screen_h - canvas_h)/2;//居中
 	
