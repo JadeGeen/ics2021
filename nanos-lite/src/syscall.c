@@ -6,6 +6,7 @@ size_t fs_read(int fd, void *buf, size_t len);
 size_t fs_write(int fd, void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
+int sys_gettimeofday(struct timeval* tv, struct timezone* tz);
 
 /*
 int sys_write(int fd, void *buf, size_t count){
@@ -59,6 +60,9 @@ void do_syscall(Context *c) {
 			break;
 		case SYS_brk:
 			c->GPRx = 0;
+			break;
+		case SYS_gettimeofday:
+			c->GPRx = sys_gettimeofday((struct timeval*)a[1], (struct timezone*)a[2]);
 			break;
 		default: panic("Unhandled syscall ID = %d", a[0]);
 	}
