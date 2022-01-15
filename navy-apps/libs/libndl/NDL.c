@@ -21,9 +21,8 @@ int NDL_PollEvent(char *buf, int len) {
 	char ch = fgetc(fp);
 	int i = 0;
 	while(i<len&&ch!=EOF){
-		buf[i]=ch;
+		buf[i++]=ch;
 		ch = fgetc(fp);
-		i++;
 	}
 	fclose(fp);
 	if(i == 0)return 0;
