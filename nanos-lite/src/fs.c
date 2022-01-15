@@ -12,10 +12,12 @@ typedef struct {
 	size_t open_offset;
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENTS, FD_FB};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB, FD_EVENTS, FD_DISPINFO};
 
 size_t serial_write(const void *buf, size_t offset, size_t len);
 size_t events_read(void *buf, size_t offset, size_t len);
+size_t fb_write(const void *buf, size_t offset, size_t len);
+size_t dispinfo_read(void *buf, size_t offset, size_t len);
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
 	panic("should not reach here");
@@ -32,12 +34,17 @@ static Finfo file_table[] __attribute__((used)) = {
 	[FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
 	[FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
 	[FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
-	[FD_EVENTS] = {"/dev/events", 0, 0,events_read, invalid_write},
+	[FD_FB] = {"/dev/fb", 0, 0, invalid_read, fb_write},
+	[FD_EVENTS] = {"/dev/events", 0, 0, events_read, invalid_write},
+	[FD_DISPINFO] = {"/proc/dispinfo", 64, 0, dispinfo_read, invalid_write}, 
 #include "files.h"
 };
 
 void init_fs() {
 	// TODO: initialize the size of /dev/fb
+	uint32_t w = io_read(AM_GPU_CONFIG).width;
+	uint32_t h = io_read(AM_GPU_CONFIG).height;
+	file_table[FD_FB].size = w*h*4;
 }
 
 #define file_num (sizeof(file_table)/sizeof(Finfo))
