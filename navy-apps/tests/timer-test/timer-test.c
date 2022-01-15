@@ -8,9 +8,9 @@ int main(){
 	while(1)
 	{
 		t = NDL_GetTicks();
-		if(t / 1000 != temp){
+		if(t / 2000 != temp){
 			temp = t/1000;
-			printf("sec : %d\n",temp);
+			printf("sec : %f\n",temp);
 		}
 	}
 	return 0;
