@@ -2,8 +2,8 @@
 #include <NDL.h>
 
 int main(){
-	int t = -1;
-	int temp = -1;
+	float t = -1;
+	float temp = -1;
 	printf("time-test starts\n");
 	while(1)
 	{
