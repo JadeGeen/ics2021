@@ -5,13 +5,39 @@
 #include <stdlib.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
-  assert(dst && src);
-  assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+	assert(dst && src);
+	assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+	int s_x = (srcrect == NULL ? 0 : srcrect->x);
+	int s_y = (srcrect == NULL ? 0 : srcrect->y);
+	int d_x = (dstrect == NULL ? 0 : dstrect->x);
+	int d_y = (dstrect == NULL ? 0 : dstrect->y);
+	int w = (srcrect == NULL ? src->w : srcrect->w);
+	int h = (srcrect == NULL ? src->h : srcrect->h);
+	uint32_t width = dst->format->palette?1:4;
+	for(int i = 0;i < h;i++)
+		memcpy(dst->pixels+width*((i+d_y)*dst->w + d_x), src->pixels + width*((i+s_y)*src->w + s_x), width*src->w);//按行set
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
-	printf("please implement me\n");
-	assert(0);
+	int x = (dstrect == NULL ? 0 : dstrect->x);
+	int y = (dstrect == NULL ? 0 : dstrect->y);
+	int w = (dstrect == NULL ? dst->w : dstrect->w);
+	int h = (dstrect == NULL ? dst->h : dstrect->h);
+	uint32_t width = dst->format->palette?1:4;
+	uint8_t setcolor = (uint8_t)color;
+	for (int i = 0; i < h; i++){
+		if(width == 1)
+			memset(dst->pixels + width*((i+y)*dst->w+x), setcolor, width*dst->w);
+		else
+			memset(dst->pixels + width*((i+y)*dst->w+x), color, width*dst->w);
+	}
+    		/*for (int j = x; j < x + w; j++)
+      			if (dst->format->BytesPerPixel == 4)
+        			((uint32_t*)dst->pixels)[i * dst->w + j] = color;
+     			 else
+        			dst->pixels[i * dst->w + j] = (uint8_t)color;*/
+	/*printf("please implement me\n");
+	assert(0);*/
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
