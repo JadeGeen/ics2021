@@ -14,8 +14,16 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 	int w = (srcrect == NULL ? src->w : srcrect->w);
 	int h = (srcrect == NULL ? src->h : srcrect->h);
 	uint32_t width = dst->format->palette?1:4;
-	for(int i = 0;i < h;i++)
+	for (int i = 0; i < h; i++)
+    		for (int j = 0; j < w; j++) {
+      			if (dst->format->BytesPerPixel == 4)
+        			((uint32_t*)dst->pixels)[(d_y+i) * dst->w + (d_x+j)] = ((uint32_t*)src->pixels)[(s_y+i) * src->w + (s_x+j)];
+      			else
+        			dst->pixels[(d_y+i) * dst->w + (d_x+j)] = src->pixels[(s_y+i) * src->w + (s_x+j)];
+}
+	/*for(int i = 0;i < h;i++)
 		memcpy(dst->pixels+width*((i+d_y)*dst->w + d_x), src->pixels + width*((i+s_y)*src->w + s_x), width*src->w);//按行set
+		*/
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
@@ -32,7 +40,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 			memset(dst->pixels + width*((i+y)*dst->w+x), color, width*dst->w);*/
 	
     		for (int j = x; j < x + w; j++)
-      			if (dst->format->BytesPerPixel == 1)
+      			if (dst->format->BytesPerPixel == 4)
         			((uint32_t*)dst->pixels)[i * dst->w + j] = color;
      			 else
         			dst->pixels[i * dst->w + j] = (uint8_t)color;
