@@ -1,3 +1,5 @@
+/****存在未解决bug****/
+
 #include <NDL.h>
 #include <sdl-video.h>
 #include <assert.h>

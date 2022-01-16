@@ -1,3 +1,5 @@
+/****（也许）存在未解决bug****/
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
