@@ -32,7 +32,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 			memset(dst->pixels + width*((i+y)*dst->w+x), color, width*dst->w);*/
 	
     		for (int j = x; j < x + w; j++)
-      			if (width == 4)
+      			if (dst->format->BytesPerPixel == 4)
         			((uint32_t*)dst->pixels)[i * dst->w + j] = color;
      			 else
         			dst->pixels[i * dst->w + j] = (uint8_t)color;
