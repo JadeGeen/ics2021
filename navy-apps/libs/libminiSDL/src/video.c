@@ -55,7 +55,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   	else {
     		if(w == 0||w > s->w) w = s->w;
     		if(h == 0||h > s->h) h = s->h;
-    		uint32_t * update= malloc(sizeof(uint32_t)*w*h);
+    		uint32_t * update= malloc(sizeof(uint32_t)*s->w*s->h);
     		for (int i = 0; i < h; i++)
       			for (int j = 0; j < w; j++)
         			update[(i+y)*w +x+j] = s->format->palette->colors[s->pixels[(i+y)*s->w + (x+j)]].val;
