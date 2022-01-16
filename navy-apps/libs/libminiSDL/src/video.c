@@ -25,17 +25,18 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 	int h = (dstrect == NULL ? dst->h : dstrect->h);
 	uint32_t width = dst->format->palette?1:4;
 	uint8_t setcolor = (uint8_t)color;
-	for (int i = 0; i < h; i++){
-		if(width == 1)
+	for (int i = y; i < y+h; i++){
+		/*if(width == 1)
 			memset(dst->pixels + width*((i+y)*dst->w+x), setcolor, width*dst->w);
 		else
-			memset(dst->pixels + width*((i+y)*dst->w+x), color, width*dst->w);
-	}
-    		/*for (int j = x; j < x + w; j++)
-      			if (dst->format->BytesPerPixel == 4)
+			memset(dst->pixels + width*((i+y)*dst->w+x), color, width*dst->w);*/
+	
+    		for (int j = x; j < x + w; j++)
+      			if (width == 4)
         			((uint32_t*)dst->pixels)[i * dst->w + j] = color;
      			 else
-        			dst->pixels[i * dst->w + j] = (uint8_t)color;*/
+        			dst->pixels[i * dst->w + j] = (uint8_t)color;
+        }
 	/*printf("please implement me\n");
 	assert(0);*/
 }
