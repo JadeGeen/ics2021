@@ -1,7 +1,6 @@
 # ICS2021 Programming Assignment
 
-进度至PA3-nterm（有bug）pal未完成
-以下是原说明
+进度至PA3-nterm（有bug）；pal未完成；以下是原说明。
 
 This project is the programming assignment of the class ICS(Introduction to Computer System)
 in Department of Computer Science and Technology, Nanjing University.
